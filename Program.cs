@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using P1_AP1_LeudyJaquez.Components;
+using P1_AP1_LeudyJaquez.DAL;
 
 namespace P1_AP1_LeudyJaquez
 {
@@ -11,6 +13,9 @@ namespace P1_AP1_LeudyJaquez
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            var constr = builder.Configuration.GetConnectionString("sqlConstr");
+            builder.Services.AddDbContextFactory<Contexto>(r => r.UseSqlite(constr));
 
             var app = builder.Build();
 
