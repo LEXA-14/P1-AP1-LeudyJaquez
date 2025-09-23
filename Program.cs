@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using P1_AP1_LeudyJaquez.Components;
 using P1_AP1_LeudyJaquez.DAL;
+using P1_AP1_LeudyJaquez.Model;
 
 namespace P1_AP1_LeudyJaquez
 {
@@ -16,6 +17,8 @@ namespace P1_AP1_LeudyJaquez
 
             var constr = builder.Configuration.GetConnectionString("sqlConstr");
             builder.Services.AddDbContextFactory<Contexto>(r => r.UseSqlite(constr));
+
+            builder.Services.AddScoped<Registro>();
 
             var app = builder.Build();
 

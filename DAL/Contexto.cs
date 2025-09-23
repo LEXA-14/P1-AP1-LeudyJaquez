@@ -8,7 +8,7 @@ public class Contexto: DbContext
     public Contexto(DbContextOptions options) : base(options)
     { }
 
-    public DbSet<Contexto> Registro { get; set; }
+    public DbSet<Registro> Registro{ get; set; }
 
     //registro is a nameplaceholder
 
