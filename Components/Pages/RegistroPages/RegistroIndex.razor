@@ -1,4 +1,77 @@
-﻿<h3>RegistroIndex</h3>
+﻿@page "/Registro/Index"
+@*@using P1_AP1_LeudyJaquez.Model;
+@using P1_AP1_LeudyJaquez.DAL;
+@using P1_AP1_LeudyJaquez.Services;*@
+@inject RegistroServices registroServices
+
+@rendermode InteractiveServer
+
+<PageTitle>Index</PageTitle>
+<div class="container">
+    <div class="card-shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title"></div>
+            <h5 class="card-title">Index</h5>
+            <a href="/Registro/Create" class="btn btn-primary"><span class="bi bi-plus-square"></span>Crear</a>
+        </div>
+
+       <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-3">
+                    <label class="col-form-label"><strong>Filtrar por</strong></label>
+                </div>
+
+                <div class="col-4 offset-5">
+                    <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <InputSelect class="form-select"@bind-Value="Filtro">
+                            <option value=""selected disabled>Selecciona una opci&oacute;n</option>
+                            <option value="ID">ID</option>
+                            <option value="Persona">Nombre</option>
+                            </InputSelect>
+
+        </div>
+        <div class="col-4 offset-5">
+                        div class="input-group">
+                        <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                        <button type="button" class="btn btn-outline-primary bi bi-search" @onclick=Buscar></button>
+                    </div>
+                    
+
+        </div>
+                    <table class="table table-hover">
+                        <thead class="table table-striped text-black">
+                            <tr>
+                                <th>ID</th>
+                                
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var registro in Lista)
+                            {
+                                <tr>
+                                    <td>@registro.id</td>
+                                    
+
+
+                                    <td class="text-center">
+                                        <a href="/Registro/Edit/@registro.RegistroId" class="btn btn-outline-primary bi bi-pencil-square"></a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+    </div>
+</div>
 
 @code {
 
