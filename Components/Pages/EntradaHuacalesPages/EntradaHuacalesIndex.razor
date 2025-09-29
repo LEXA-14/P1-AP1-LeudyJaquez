@@ -1,18 +1,18 @@
 ﻿@page "/EntradaHuacales/Index"
-@*@using P1_AP1_LeudyJaquez.Model;
-@using P1_AP1_LeudyJaquez.DAL;
-@using P1_AP1_LeudyJaquez.Services;*@
-@inject EntradaHuacales_Services registroServices
+@using P1_AP1_LeudyJaquez.Services
+
+@inject EntradaHuacalesServices entradaHuacales_Services
 
 @rendermode InteractiveServer
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Entrada de Huacales</PageTitle>
+
 <div class="container">
     <div class="card-shadow-lg">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div class="card-title"></div>
             <h5 class="card-title">Index</h5>
-            <a href="/Registro/Create" class="btn btn-primary"><span class="bi bi-plus-square"></span>Crear</a>
+            <a href="/EntradaHuacales/Create" class="btn btn-primary"><span class="bi bi-plus-square"></span>Crear</a>
         </div>
 
        <div class="card-body">
@@ -20,24 +20,31 @@
             <div class="row">
 
                 <div class="col-3">
-                    <label class="col-form-label"><strong>Filtrar por</strong></label>
+                    <label><strong>Desde</strong></label>
+                    <InputDate class="form-control" @bind-Value=desde></InputDate>
                 </div>
 
-                <div class="col-4 offset-5">
-                    <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                <div class="col-3">
+                    <label><strong>Hasta</strong></label>
+                    <InputDate class="form-control" @bind-Value=hasta></InputDate>
+                </div>
                 </div>
 
                 <div class="row align-items-center">
                     <div class="col-3">
+                        <label class="col-form-label"><strong>Filtrar por</strong></label>
                         <InputSelect class="form-select"@bind-Value="Filtro">
                             <option value=""selected disabled>Selecciona una opci&oacute;n</option>
                             <option value="ID">ID</option>
                             <option value="Persona">Nombre</option>
+                            <option value="Cantidad">Cantidad</option>
+                            <option value="Precio">Precio</option>
                             </InputSelect>
 
         </div>
         <div class="col-4 offset-5">
-                        div class="input-group">
+                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                        <div class="input-group">
                         <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
                         <button type="button" class="btn btn-outline-primary bi bi-search" @onclick=Buscar></button>
                     </div>
@@ -48,20 +55,26 @@
                         <thead class="table table-striped text-black">
                             <tr>
                                 <th>ID</th>
+                                <th>Nombres Clientes</th>
+                                <th>Fecha</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
                                 
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var registro in Lista)
+                            @foreach (var entrada in ListaEntrada)
                             {
                                 <tr>
-                                    <td>@registro.id</td>
+                                    <td>@entrada.IdEntrada</td>
+                                    <td>@entrada.NombreCliente</td>
+                                    <th>@entrada.Fecha</th>
+                                    <th>@entrada.Cantidad</th>
+                                    <th>@entrada.Precio</th>
                                     
-
-
                                     <td class="text-center">
-                                        <a href="/Registro/Edit/@registro.RegistroId" class="btn btn-outline-primary bi bi-pencil-square"></a>
+                                        <a href="/EntradaHuacales/Edit/@entrada.IdEntrada" class="btn btn-outline-primary bi bi-pencil-square"></a>
                                     </td>
 
                                 </tr>
@@ -71,8 +84,72 @@
                     </table>
 
     </div>
+    <div class="card-footer d-flex justify-content-between">
+        <label>Cantidad de Entradas:@ListaEntrada.Count()</label>
+        <label>Cantidad de Huacales:@ListaEntrada.Sum(e=>e.Cantidad)</label>
+    </div>
+</div>
+</div>
 </div>
 
 @code {
 
+    //public EntradaHuacales entradaHuacales{ get; set; }
+    public List<EntradaHuacales> ListaEntrada { get; set; } = new List<EntradaHuacales>();
+
+    public string Filtro{ get; set; }
+    public string ValorFiltro{ get; set; }
+
+    public DateTime? desde{ get; set; }
+    public DateTime? hasta{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaEntrada = await entradaHuacales_Services.GetLista(e => e.IdEntrada > 0);
+    }
+
+    public async Task Buscar()
+    {
+        var prelista = await entradaHuacales_Services.GetLista(e => e.IdEntrada > 0);
+
+        if(desde.HasValue && hasta.HasValue)
+        {
+            prelista = prelista.Where(e => e.Fecha >= desde && e.Fecha <= hasta).ToList();
+        }
+
+        if(desde.HasValue && hasta == null)
+        {
+            prelista = prelista.Where(e => e.Fecha >= desde).ToList();
+        }
+
+        if (hasta.HasValue && desde == null)
+        {
+            prelista = prelista.Where(e => e.Fecha <= hasta).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(ValorFiltro))
+        {
+            if(Filtro=="ID" && int.TryParse(ValorFiltro,out int id))
+            {
+                prelista = prelista.Where(e => e.IdEntrada == id).ToList();
+            }
+
+            if (Filtro == "Persona")
+            {
+                prelista = prelista.Where(e => e.NombreCliente.ToLower() == ValorFiltro.ToLower()).ToList();
+            }
+
+            if (Filtro == "Cantidad" && int.TryParse(ValorFiltro,out int cantidad)){
+
+                prelista = prelista.Where(e => e.Cantidad == cantidad).ToList();
+            }
+
+            if(Filtro=="Precio" && double.TryParse(ValorFiltro,out double precio))
+            {
+                prelista = prelista.Where(e => e.Precio == precio).ToList();
+            }
+        }
+        ListaEntrada = prelista;
+
+                }
 }

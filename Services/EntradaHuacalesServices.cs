@@ -7,7 +7,7 @@ using P1_AP1_LeudyJaquez.Components;
 
 namespace P1_AP1_LeudyJaquez.Services;
 
-public class EntradaHuacales_Services(IDbContextFactory<Contexto> dbFactory)
+public class EntradaHuacalesServices(IDbContextFactory<Contexto> dbFactory)
 {
 
     //registrar
