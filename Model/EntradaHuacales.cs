@@ -2,7 +2,7 @@
 
 namespace P1_AP1_LeudyJaquez.Model;
 
-public class Registro
+public class EntradaHuacales
 {
     [Key]
     public int Id { get; set; }

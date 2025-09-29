@@ -18,7 +18,7 @@ namespace P1_AP1_LeudyJaquez
             var constr = builder.Configuration.GetConnectionString("sqlConstr");
             builder.Services.AddDbContextFactory<Contexto>(r => r.UseSqlite(constr));
 
-            builder.Services.AddScoped<Registro>();
+            builder.Services.AddScoped<EntradaHuacales>();
 
             var app = builder.Build();
 
