@@ -1,61 +1,50 @@
-﻿@page "/EntradaHuacales/Create"
+﻿@page "/EntradaHuacales/Edit/{EntradaId:int}"
 
-@inject EntradaHuacalesServices entradaHuacalesServices;
-@inject NavigationManager navigationManager;
+@inject EntradaHuacalesServices entradaHuacalesServices
+@inject NavigationManager navigationManager
 
 @rendermode InteractiveServer
 
-<PageTitle>Crear Entrada Huacales</PageTitle>
+<PageTitle>Editar Entrada Huacales</PageTitle>
 
-
-<EditForm Model="huacal" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator/>
-
-    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-    {
-        <div class="alert alert-danger" role="alert">
-            @ErrorMessage
-        </div>
-    }
+<EditForm Model="huacal" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
 
     <div class="container">
-        
-
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ErrorMessage
+            </div>
+        }
         <div class="card shadow-lg">
-            <div class="card-header text-center">Crear Entrada de Huacal </div>
+            <div class="card-header text-center">Editar Entrada de Huacal </div>
 
             <div class="card-body">
 
                 <div class="mb-3">
                     <label><strong>ID Entrada de Huacal</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.IdEntrada readonly></InputNumber>
-                    <ValidationSummary/>
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Nombres de cliente</strong></label>
                     <InputText class="form-control" @bind-Value=huacal.NombreCliente></InputText>
-                    <ValidationSummary/>
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Fecha</strong></label>
                     <InputDate class="form-control" @bind-Value=huacal.Fecha></InputDate>
-                    <ValidationSummary/>
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Cantidad de huacales</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Cantidad></InputNumber>
-                    <ValidationSummary />
-
                 </div>
-                
 
                 <div class="mb-3">
                     <label><strong>Precio</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Precio></InputNumber>
-                    <ValidationSummary/>
                 </div>
 
 
@@ -63,29 +52,53 @@
             </div>
             <div class="card-footer text-center">
                 <button type="submit" class="btn btn-primary bi bi-floppy">Guardar</button>
+                <button type="button" class="btn btn-danger bi bi-trash" @onclick="Eliminar">Eliminar</button>
             </div>
         </div>
     </div>
 </EditForm>
 
 @code {
+    [Parameter]
+    public int EntradaId{ get; set; }
     public EntradaHuacales huacal { get; set; } = new EntradaHuacales();
     public string ErrorMessage { get; set; } = string.Empty;
 
-    public async Task Guardar()
+
+    protected override async Task OnInitializedAsync()
     {
-        var creado = await entradaHuacalesServices.Guardar(huacal);
+        if (EntradaId > 0)
+        {
+            huacal = await entradaHuacalesServices.BuscarId(EntradaId);
+        }
+    }
+    public async Task Modificar()
+    {
+        var modificado = await entradaHuacalesServices.Modificar(huacal);
 
-
-
-        if (creado)
+        if (modificado)
         {
             ErrorMessage = "Se ha creado Correctamente";
             navigationManager.NavigateTo("/EntradaHuacales/Index");
         }
         else
         {
-            ErrorMessage = "No se ha podido crear";
+            ErrorMessage = "No se pudo Modificar correctamente";
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await entradaHuacalesServices.Eliminar(huacal.IdEntrada);
+
+        if (eliminado)
+        {
+            ErrorMessage = "Se ha eliminado Correctamente";
+            navigationManager.NavigateTo("/EntradaHuacales/Index");
+        }
+        else
+        {
+            ErrorMessage = "No se pudo eliminar correctamente";
         }
     }
 

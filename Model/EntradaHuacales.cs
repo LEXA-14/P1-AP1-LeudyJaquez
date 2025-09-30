@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
 
 namespace P1_AP1_LeudyJaquez.Model;
 
@@ -13,7 +14,7 @@ public class EntradaHuacales
 
     [Required(ErrorMessage = "Este campo no puede estar vacio")]
 
-    public DateTime Fecha { get; set; }
+    public DateTime Fecha { get; set; } 
 
     [Required(ErrorMessage ="Este campo no puede estar vacio")]
 

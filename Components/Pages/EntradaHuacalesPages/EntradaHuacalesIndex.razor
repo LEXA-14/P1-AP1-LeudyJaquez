@@ -1,7 +1,7 @@
 ﻿@page "/EntradaHuacales/Index"
 @using P1_AP1_LeudyJaquez.Services
 
-@inject EntradaHuacalesServices entradaHuacales_Services
+@inject EntradaHuacalesServices entradaHuacalesServices
 
 @rendermode InteractiveServer
 
@@ -100,17 +100,17 @@
     public string Filtro{ get; set; }
     public string ValorFiltro{ get; set; }
 
-    public DateTime? desde{ get; set; }
-    public DateTime? hasta{ get; set; }
+    public DateTime? desde { get; set; } = null;
+    public DateTime? hasta { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
-        ListaEntrada = await entradaHuacales_Services.GetLista(e => e.IdEntrada > 0);
+        ListaEntrada = await entradaHuacalesServices.GetLista(e => e.IdEntrada > 0);
     }
 
     public async Task Buscar()
     {
-        var prelista = await entradaHuacales_Services.GetLista(e => e.IdEntrada > 0);
+        var prelista = await entradaHuacalesServices.GetLista(e => e.IdEntrada > 0);
 
         if(desde.HasValue && hasta.HasValue)
         {
@@ -136,7 +136,7 @@
 
             if (Filtro == "Persona")
             {
-                prelista = prelista.Where(e => e.NombreCliente.ToLower() == ValorFiltro.ToLower()).ToList();
+                prelista = prelista.Where(e => e.NombreCliente.ToLower().Contains( ValorFiltro.ToLower())).ToList();
             }
 
             if (Filtro == "Cantidad" && int.TryParse(ValorFiltro,out int cantidad)){

@@ -40,7 +40,7 @@ public class EntradaHuacalesServices(IDbContextFactory<Contexto> dbFactory)
         return await contexto.SaveChangesAsync() > 0;
     }
 
-    private async Task<bool>Modificar (EntradaHuacales huacales)
+    public async Task<bool>Modificar (EntradaHuacales huacales)
     {
         await using var contexto = await dbFactory.CreateDbContextAsync();
         contexto.Update(huacales);

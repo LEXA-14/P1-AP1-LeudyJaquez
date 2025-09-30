@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using P1_AP1_LeudyJaquez.Components;
 using P1_AP1_LeudyJaquez.DAL;
 using P1_AP1_LeudyJaquez.Model;
+using P1_AP1_LeudyJaquez.Services;
 
 namespace P1_AP1_LeudyJaquez
 {
@@ -19,6 +20,7 @@ namespace P1_AP1_LeudyJaquez
             builder.Services.AddDbContextFactory<Contexto>(r => r.UseSqlite(constr));
 
             builder.Services.AddScoped<EntradaHuacales>();
+            builder.Services.AddScoped<EntradaHuacalesServices>();
 
             var app = builder.Build();
 
