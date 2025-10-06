@@ -60,6 +60,7 @@
                                 <th>Fecha</th>
                                 <th>Cantidad</th>
                                 <th>Precio</th>
+                                <th>Importe</th>
                                 
 
                             </tr>
@@ -73,6 +74,8 @@
                                     <th>@entrada.Fecha</th>
                                     <th>@entrada.Cantidad</th>
                                     <th>@entrada.Precio</th>
+                                    <th>@entrada.Importe</th>
+                                    
                                     
                                     <td class="text-center">
                                         <a href="/EntradaHuacales/Edit/@entrada.IdEntrada" class="btn btn-outline-primary bi bi-pencil-square"></a>
@@ -88,6 +91,7 @@
     <div class="card-footer d-flex justify-content-between">
         <label>Cantidad de Entradas:@ListaEntrada.Count()</label>
         <label>Cantidad de Huacales:@ListaEntrada.Sum(e=>e.Cantidad)</label>
+        <label>Total Importe: @ListaEntrada.Sum(e=>e.Importe)</label>
     </div>
 </div>
 </div>
@@ -96,7 +100,7 @@
 
 @code {
 
-    //public EntradaHuacales entradaHuacales{ get; set; }
+    
     public List<EntradaHuacales> ListaEntrada { get; set; } = new List<EntradaHuacales>();
 
     public string Filtro{ get; set; }

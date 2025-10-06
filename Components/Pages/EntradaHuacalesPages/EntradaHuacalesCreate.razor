@@ -11,13 +11,6 @@
 <EditForm Model="huacal" OnValidSubmit="Guardar">
     <DataAnnotationsValidator/>
 
-    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-    {
-        <div class="alert alert-danger" role="alert">
-            @ErrorMessage
-        </div>
-    }
-
     <div class="container">
         
 
@@ -29,25 +22,25 @@
                 <div class="mb-3">
                     <label><strong>ID Entrada de Huacal</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.IdEntrada readonly></InputNumber>
-                    <ValidationSummary/>
+                   
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Nombres de cliente</strong></label>
                     <InputText class="form-control" @bind-Value=huacal.NombreCliente></InputText>
-                    <ValidationSummary/>
+                    <ValidationMessage For="@(() => huacal.NombreCliente)" />
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Fecha</strong></label>
                     <InputDate class="form-control" @bind-Value=huacal.Fecha></InputDate>
-                    <ValidationSummary/>
+                    <ValidationMessage For="@(() => huacal.Fecha)" />
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Cantidad de huacales</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Cantidad></InputNumber>
-                    <ValidationSummary />
+                    <ValidationMessage For="@(() => huacal.Cantidad)" />
 
                 </div>
                 
@@ -55,7 +48,8 @@
                 <div class="mb-3">
                     <label><strong>Precio</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Precio></InputNumber>
-                    <ValidationSummary/>
+                    <ValidationMessage For="@(() => huacal.Precio)" />
+                   
                 </div>
 
 
