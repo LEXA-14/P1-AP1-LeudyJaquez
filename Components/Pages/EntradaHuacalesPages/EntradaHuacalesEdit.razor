@@ -11,12 +11,7 @@
     <DataAnnotationsValidator />
 
     <div class="container">
-        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-        {
-            <div class="alert alert-danger" role="alert">
-                @ErrorMessage
-            </div>
-        }
+       
         <div class="card shadow-lg">
             <div class="card-header text-center">Editar Entrada de Huacal </div>
 
@@ -30,21 +25,25 @@
                 <div class="mb-3">
                     <label><strong>Nombres de cliente</strong></label>
                     <InputText class="form-control" @bind-Value=huacal.NombreCliente></InputText>
+                    <ValidationMessage For="@(() => huacal.NombreCliente)" />
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Fecha</strong></label>
                     <InputDate class="form-control" @bind-Value=huacal.Fecha></InputDate>
+                    <ValidationMessage For="@(() => huacal.Fecha)" />
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Cantidad de huacales</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Cantidad></InputNumber>
+                    <ValidationMessage For="@(() => huacal.Cantidad)" />
                 </div>
 
                 <div class="mb-3">
                     <label><strong>Precio</strong></label>
                     <InputNumber class="form-control" @bind-Value=huacal.Precio></InputNumber>
+                    <ValidationMessage For="@(() => huacal.Precio)" />
                 </div>
 
 
